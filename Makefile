@@ -6,17 +6,19 @@
 
 NAME	= Index
 
-SRCPATH	=	main.c	\
-			error.c	\
+SRCPATH	=	src/
 
-SRC 	= src/$(SRCPATH)
+SRC 	= 	$(SRCPATH)main.c		\
+			$(SRCPATH)error.c		\
+			$(SRCPATH)index.c		\
+			$(SRCPATH)parsing.c		\
+			$(SRCPATH)ft_base.c 	\
+			$(SRCPATH)menu.c		\
 
 OBJ 	= $(SRC:.c=.o)
 
 FLAGS	=	-Wall	\
 			-Werror	\
-			-ansi	\
-			-lMLV	\
 
 HEADER	= includes
 

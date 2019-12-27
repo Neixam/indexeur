@@ -21,7 +21,7 @@ int     traite_argument(int ac, char **av, Entrer *data)
         return (1);
     if (option_flag(av[1][1], data) || !(ft_strstr(av[ac - 1], ".ascii")))
         return (1);
-    if ((data->name = ft_stdup(av[ac - 1])) == NULL);
+    if ((data->name = ft_strdup(av[ac - 1])) == NULL)
         return (1);
     if (ac == 3)
     {

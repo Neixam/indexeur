@@ -9,6 +9,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <errno.h>
+# include <string.h>
 
 typedef struct  celpos
 {
@@ -44,6 +45,7 @@ int     put_error(int type_error);
 int     start_index(Entrer data);
 int     traite_argument(int ac, char **av, Entrer *data);
 
+char	*ft_stradd(char *s, int c);
 char	*ft_strdup(char *s);
 char	*ft_strstr(char *s1, char *s2);
 

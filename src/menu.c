@@ -11,7 +11,7 @@ char    *saisie_choix(void)
     char    *choix;
     char    tmp;
 
-    if (!(choix = (char*)malloc(sizeof(char))) == NULL)
+    if (!(choix = (char*)malloc(sizeof(char))))
         return (NULL);
     do
     {
@@ -27,15 +27,16 @@ int     select_fichier(Entrer *data)
 {
     char    *choix;
 
-    printf("Entrer le nom de votre fichier (.ascii) : ");
+    printf("Entrer le nom de votre fichier (.ascii) :\n");
     if (!(choix = saisie_choix()))
         return (-1);
     if (strcmp(choix, "quit") == 0)
         return (2);
-    if (!ft_strstr(choix, ".ascii"))
+    if (!ft_strstr(choix, ".ascii") || !(data->content = fopen(choix, "r")))
+    {
+        free(choix);
         return (0);
-    if (!(data->content = fopen(choix, "r")))
-        return (0);
+    }
     if (!(data->name = ft_strdup(choix)))
         return (-1);
     free(choix);
@@ -69,9 +70,9 @@ int     menu(void)
 {
     Entrer  data;
     int     controle;
-    char    *choix;
+    char    *enter;
 
-    choix = NULL;
+    enter = NULL;
     do {
     while ((controle = select_fichier(&data)) != 1)
     {
@@ -89,15 +90,15 @@ int     menu(void)
             return (put_error(0));
         printf("Option inconnue.\n");
     }
-    if (choix != NULL)
-        free(choix);
+    if (enter != NULL)
+        free(enter);
     if (ft_strchr("apPd", data.flag) != -1)
     {
         printf("Entrer un mot : ");
-        if (!(choix = saisie_choix()))
+        if (!(enter = saisie_choix()))
             return (put_error(0));
     }
-    }while (strcmp(choix, "quit") != 0);
-    free(choix);
+    }while (strcmp(enter, "quit") != 0);
+    free(enter);
     return (0);
 }

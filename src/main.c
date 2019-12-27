@@ -15,7 +15,7 @@ int     main(int ac, char **av)
         return (menu());
     else
     {
-        if (traite_argument(ac, av, &data));
+        if (traite_argument(ac, av, &data))
             return (put_error(1));
         if (!(data.content = fopen(data.name, "r")))
             return (put_error(0));

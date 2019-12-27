@@ -64,7 +64,7 @@ char	*ft_stradd(char *s, int c)
 	int		i;
 	char	*ret;
 
-	len = ft_strlen(s) + 1;
+	len = strlen(s) + 1;
 	if ((ret = (char*)malloc(sizeof(char) * (len + 1))) == NULL)
 		return (NULL);
 	for (i = 0; i < len - 1; i++)
