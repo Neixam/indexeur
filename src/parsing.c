@@ -32,6 +32,8 @@ int     traite_argument(int ac, char **av, Entrer *data)
     {
         if (ft_strchr("apPd", data->flag) == -1)
             return (1);
+        if ((data->mot = ft_strdup(av[2])) == NULL)
+            return (1);
     }
     else
         return (1);

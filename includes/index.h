@@ -10,6 +10,7 @@
 # include <stdlib.h>
 # include <errno.h>
 # include <string.h>
+# define BUFF_SIZE 1024
 
 typedef struct  celpos
 {
@@ -36,7 +37,10 @@ typedef struct  entrer
     int     flag;
     FILE    *content;
     char    *name;
+    char    *mot;
 }               Entrer;
+
+void    ft_convert_case(char *s);
 
 int     ft_strchr(char *s, int c);
 int     menu(void);
@@ -48,5 +52,7 @@ int     traite_argument(int ac, char **av, Entrer *data);
 char	*ft_stradd(char *s, int c);
 char	*ft_strdup(char *s);
 char	*ft_strstr(char *s1, char *s2);
+char    *ft_strjoin(char *s1, char *s2, int boo);
+char    *ft_strsupp(char *s);
 
 #endif

@@ -10,7 +10,7 @@ int		ft_strchr(char *s, int c)
 {
 	int		i;
 
-	for (i = 0; i >= 0; i++)
+	for (i = 0; s[i] != '\0'; i++)
 		if (s[i] == c)
 			return (i);
 	return (-1);
@@ -73,4 +73,66 @@ char	*ft_stradd(char *s, int c)
 	ret[i + 1] = '\0';
 	free(s);
 	return (ret);
+}
+
+char	*ft_strjoin(char *s1, char *s2, int boo)
+/* BUT    : Crée une nouvelle chaine contenant la concaténation de s1 et s2 et*/
+/*          peut libèrer l'espace mémoire de s1 et s2 si possible             */
+/* PARAM  : s1  => première chaine de charactère                              */
+/*          s2  => seconde chaine de charactère                               */
+/*          boo => 0 libère aucune chaine, 1 libère s1, 2 libère s2 et libère */
+/*                 toute les chaines avec 3                                   */
+/* RETOUR : Renvoie la nouvelle chaine de charactère ou NULL si il y a un     */
+/*          problème d'allocation mémoire                                     */
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*ret;
+
+	len = strlen(s1) + strlen(s2);
+	if (!(ret = (char *)malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	for (i = 0; s1[i] != '\0'; i++)
+		ret[i] = s1[i];
+	j = i;
+	for (i = 0; s2[i] != '\0'; i++)
+	{
+		ret[j] = s2[i];
+		j++;
+	}
+	ret[j] = '\0';
+	if (boo == 1 || boo == 3)
+		free(s1);
+	if (boo == 2 || boo == 3)
+		free(s2);
+	return (ret);
+}
+
+char	*ft_strsupp(char *s)
+/* BUT    : Retire le dernier charactère de la chaine s                       */
+/* PARAM  : Chaine de charactère que l'on veut modifier                       */
+/* RETOUR : La nouvelle chaine de charactère s sans le dernier charactère     */
+{
+	int		i;
+	int		len;
+	char	*ret;
+
+	len = strlen(s) - 1;
+	if ((ret = (char*)malloc(sizeof(char) * (len + 1))) == NULL)
+		return (NULL);
+	for (i = 0; i < len; i++)
+		ret[i] = s[i];
+	ret[i] = '\0';
+	free(s);
+	return (ret);
+}
+
+void	ft_convert_case(char *s)
+{
+	int		i;
+
+	for (i = 0; s[i] != '\0' ; i++)
+		if (s[i] <= 'Z' && s[i] >= 'A')
+			s[i] += 32;
 }
