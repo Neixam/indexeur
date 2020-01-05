@@ -6,6 +6,66 @@
 
 #include "index.h"
 
+void    libere_pos(Listepos pos)
+{
+    if (pos->suivant != NULL)
+        libere_pos(pos->suivant);
+    free(pos);
+    pos = NULL;
+}
+
+void    libere_mot(Celmot *val)
+{
+    if (val->positions != NULL)
+        libere_pos(val->positions);
+    free(val->mot);
+    free(val);
+    val = NULL;
+}
+
+void    libere_lst(Liste lst)
+{
+    if (lst->valeur != NULL)
+        libere_mot(lst->valeur);
+    if (lst->suivant != NULL)
+        libere_lst(lst->suivant);
+    free(lst);
+}
+
+void    libere_lst_tab(Liste lst)
+{
+    if (lst != NULL)
+    {
+        libere_lst_tab(lst->suivant);
+        lst->valeur = NULL;
+        free(lst);
+    }
+}
+
+void    libere_espace(Liste *tab, int N, Liste lst, Entrer *data)
+{
+    int     i;
+
+    libere_lst(lst);
+    for (i = 0; i < N; i++)
+        libere_lst_tab(tab[i]);
+    if (data->name != NULL)
+    {
+        free(data->name);
+        data->name = NULL;
+    }
+    if (data->content != NULL)
+    {
+        fclose(data->content);
+        data->content = NULL;
+    }
+    if (data->mot != NULL)
+    {
+        free(data->mot);
+        data->mot = NULL;
+    }
+}
+
 int     add_to_tab(Liste *lst1, Liste lst2)
 {
     Liste   tmp;
@@ -30,12 +90,11 @@ int     add_to_tab(Liste *lst1, Liste lst2)
 int     index_mot(Liste lst, Entrer data)
 {
     Liste   *tab_hache;
-/*    Liste   tmp;
-    Listepos tmp2;*/
+    Liste   tmp;
     int     len;
     int     i;
 
-    len = compte_mot(lst) / 5;
+    len = compte_mot(lst) * 3;
     if ((tab_hache = (Liste*)malloc(sizeof(Liste) * len)) == NULL)
         return (1);
     for (i = 0; i < len; i++)
@@ -43,22 +102,11 @@ int     index_mot(Liste lst, Entrer data)
     for (tmp = lst; tmp; tmp = tmp->suivant)
         if (add_to_tab(&tab_hache[hache(tmp->valeur->mot) % len], tmp))
             return (1);
-/*    for (i = 0; i < len; i++)
-    {
-        printf("%d => ", i);
-        if (tab_hache[i] == NULL)
-            printf("NULL");
-        else
-            for (tmp = tab_hache[i]; tmp; tmp = tmp->suivant)
-            {
-                printf("%s pos : ", tmp->valeur->mot);
-                for (tmp2 = tmp->valeur->positions; tmp2; tmp2 = tmp2->suivant)
-                    printf("%d ", tmp2->position);
-                if (tmp->suivant)
-                    printf("--> ");
-            }
-        printf("\n");
-    }*/
+/*    put_S(tab_hache, len);*/
+/*    put_vide(tab_hache, len); */
+    if (traite_tab_flag(tab_hache, len, data, lst))
+        return (1);
+    libere_espace(tab_hache, len, lst, &data);
     return (0);
 }
 
@@ -70,11 +118,9 @@ int     start_index(Entrer data)
     int     len;
     char    *mot;
     Liste   lst;
-/*    Liste   tmp;
-    Listepos tmp2;*/
 
     lst = NULL;
-    for (data.octet = 0; ft_fgets_phrase(buff, BUFF_SIZE, data.content);
+    for (data.octet = 0; ft_fgets_phrase(buff, BUFF_SIZE, data.content) != 0;
         data.octet += len)
     {
         ft_convert_case(buff);
@@ -94,13 +140,6 @@ int     start_index(Entrer data)
             }
         }
     }
-/*    for (tmp = lst; tmp; tmp = tmp->suivant)
-    {
-        printf("mot => %s => pos : ", tmp->valeur->mot);
-        for (tmp2 = tmp->valeur->positions; tmp2; tmp2 = tmp2->suivant)
-            printf("%d ", tmp2->position);
-        printf("\n");
-    } */
     if (index_mot(lst, data))
         return (1);
     return (0);

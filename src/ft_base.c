@@ -142,15 +142,18 @@ int		ft_fgets_phrase(char *buff, int size, FILE *stream)
 	char	tmp;
 	int		i;
 
-	for (i = 0; (tmp = fgetc(stream)) != EOF && i < size - 1; i++)
+	for (i = 0; i < size - 1 && (tmp = fgetc(stream)) != EOF; i++)
 	{
 		buff[i] = tmp;
 		if (ft_strchr(".?!", tmp) != -1)
 		{
 			i++;
-			break;
+			buff[i] = '\0';
+			return (2);
 		}
 	}
+	if (tmp != EOF)
+		i++;
 	buff[i] = '\0';
 	if (tmp == EOF && i == 0)
 		return (0);
@@ -169,5 +172,94 @@ char	*ft_strndup(char *s, int n)
 	for (i = 0; i < len; i++)
 		ret[i] = s[i];
 	ret[i] = '\0';
+	return (ret);
+}
+
+void	put_S(Liste *tab, int N)
+{
+	float	moy;
+	float	s;
+	int		xi;
+	Liste	tmp;
+	int		i;
+
+	moy = 0.0;
+	for (i = 0; i < N; i++)
+		for (tmp = tab[i]; tmp; tmp = tmp->suivant)
+			moy++;
+	moy /= i;
+	s = 0.0;
+	for (i = 0; i < N; i++)
+	{
+		xi = 0;
+		for (tmp = tab[i]; tmp; tmp = tmp->suivant)
+			xi++;
+		s += (xi - moy) * (xi - moy);
+	}
+	s /= i;
+	printf("S = %f\n", sqrtf(s));
+}
+
+void	put_vide(Liste *tab, int N)
+{
+	int		i;
+	int		nb_vide;
+	float	percent;
+
+	nb_vide = 0;
+	for (i = 0; i < N; i++)
+		if (tab[i] == NULL)
+			nb_vide++;
+	percent = (nb_vide * 100.0) / N;
+	printf("%f%c\n", percent, '%');
+}
+
+char	*ft_fgets_phrase_2(FILE *stream)
+{
+    char        buff[BUFF_SIZE];
+	char		*str;
+	char		*ret;
+	char		*mot;
+	int			controle;
+	int			i;
+	int			j;
+	int			len;
+
+	if ((str = (char*)malloc(sizeof(char))) == NULL)
+		return (NULL);
+	*str = '\0';
+	do{
+		controle = ft_fgets_phrase(buff, BUFF_SIZE, stream);
+		if (controle != 0)
+			if ((str = ft_strjoin(str, buff, 1)) == NULL)
+				return (NULL);
+	}while (controle == 1);
+	ft_convert_case(str);
+	if ((ret = (char*)malloc(sizeof(char))) == NULL)
+		return (NULL);
+	*ret = '\0';
+	j = 0;
+	len = strlen(str);
+	for (i = 0; i < len; i++)
+	{
+        if (str[i] >= 'a' && str[i] <= 'z')
+        {
+			if (j != 0)
+				if ((ret = ft_stradd(ret, ' ')) == NULL)
+					return (NULL);
+            for (j = 0; i + j < len && str[i + j] >= 'a' &&
+                        str[i + j] <= 'z'; j++);
+            if ((mot = ft_strndup(&str[i], j)) == NULL)
+                return (NULL);
+			if ((ret = ft_strjoin(ret, mot, 1)) == NULL)
+				return (NULL);
+			free(mot);
+            i += j - 1;
+        }
+		else if (ft_strchr(".;/,\"\'!?()-", str[i]) != -1)
+			if ((ret = ft_stradd(ret, str[i])) == NULL)
+				return (NULL);
+	}
+	free(str);
 	return (ret);
 }
