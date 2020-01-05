@@ -136,3 +136,38 @@ void	ft_convert_case(char *s)
 		if (s[i] <= 'Z' && s[i] >= 'A')
 			s[i] += 32;
 }
+
+int		ft_fgets_phrase(char *buff, int size, FILE *stream)
+{
+	char	tmp;
+	int		i;
+
+	for (i = 0; (tmp = fgetc(stream)) != EOF && i < size - 1; i++)
+	{
+		buff[i] = tmp;
+		if (ft_strchr(".?!", tmp) != -1)
+		{
+			i++;
+			break;
+		}
+	}
+	buff[i] = '\0';
+	if (tmp == EOF && i == 0)
+		return (0);
+	return (1);
+}
+
+char	*ft_strndup(char *s, int n)
+{
+	int		len;
+	int		i;
+	char	*ret;
+
+	len = n;
+	if ((ret = (char*)malloc(sizeof(char) * (len + 1))) == NULL)
+		return (NULL);
+	for (i = 0; i < len; i++)
+		ret[i] = s[i];
+	ret[i] = '\0';
+	return (ret);
+}

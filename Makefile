@@ -13,6 +13,8 @@ SRC 	= 	$(SRCPATH)main.c		\
 			$(SRCPATH)index.c		\
 			$(SRCPATH)parsing.c		\
 			$(SRCPATH)ft_base.c 	\
+			$(SRCPATH)lst.c			\
+			$(SRCPATH)hachage.c		\
 			$(SRCPATH)menu.c		\
 
 OBJ 	= $(SRC:.c=.o)

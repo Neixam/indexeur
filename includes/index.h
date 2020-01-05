@@ -11,6 +11,7 @@
 # include <errno.h>
 # include <string.h>
 # define BUFF_SIZE 1024
+# define N 47
 
 typedef struct  celpos
 {
@@ -36,23 +37,30 @@ typedef struct  entrer
 {
     int     flag;
     FILE    *content;
+    int     octet;
     char    *name;
     char    *mot;
 }               Entrer;
 
-void    ft_convert_case(char *s);
+void            ft_convert_case(char *s);
 
-int     ft_strchr(char *s, int c);
-int     menu(void);
-int     option_flag(char arg, Entrer *data);
-int     put_error(int type_error);
-int     start_index(Entrer data);
-int     traite_argument(int ac, char **av, Entrer *data);
+int             compte_mot(Liste lst);
+int	            ft_fgets_phrase(char *buff, int size, FILE *stream);
+int             ft_strchr(char *s, int c);
+int             menu(void);
+int             option_flag(char arg, Entrer *data);
+int             put_error(int type_error);
+int             start_index(Entrer data);
+int             traite_argument(int ac, char **av, Entrer *data);
+int             ajout_mot(Liste *lst, char *mot, int position);
 
-char	*ft_stradd(char *s, int c);
-char	*ft_strdup(char *s);
-char	*ft_strstr(char *s1, char *s2);
-char    *ft_strjoin(char *s1, char *s2, int boo);
-char    *ft_strsupp(char *s);
+unsigned int    hache(char *p);
+
+char	        *ft_stradd(char *s, int c);
+char	        *ft_strdup(char *s);
+char	        *ft_strndup(char *s, int n);
+char	        *ft_strstr(char *s1, char *s2);
+char            *ft_strjoin(char *s1, char *s2, int boo);
+char            *ft_strsupp(char *s);
 
 #endif
