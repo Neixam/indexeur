@@ -177,8 +177,8 @@ char	*ft_strndup(char *s, int n)
 
 void	put_S(Liste *tab, int N)
 {
-	float	moy;
-	float	s;
+	double	moy;
+	double	s;
 	int		xi;
 	Liste	tmp;
 	int		i;
@@ -197,14 +197,14 @@ void	put_S(Liste *tab, int N)
 		s += (xi - moy) * (xi - moy);
 	}
 	s /= i;
-	printf("S = %f\n", sqrtf(s));
+	printf("S = %f\n", sqrt(s));
 }
 
 void	put_vide(Liste *tab, int N)
 {
 	int		i;
 	int		nb_vide;
-	float	percent;
+	double	percent;
 
 	nb_vide = 0;
 	for (i = 0; i < N; i++)
